@@ -12,7 +12,19 @@ function QnaSection() {
     const [answer_check, setAnswer_check] = useState(null)
     const [formdata, setFormdata] = useState({})
     const [test, setTest] = useState(false)
+    //--------------------------------------------------------------reload-------------------------------
+    useEffect(() => {
+        const unloadCallback = (event) => {
+            event.preventDefault();
+            event.returnValue = "";
+            return "";
+        };
 
+        window.addEventListener("beforeunload", unloadCallback);
+        return () => window.removeEventListener("beforeunload", unloadCallback);
+    }, []);
+
+    //------------------------------------------------------------------------------------------------------
 
     //------------------------------------------------------------------------------------------------------
     const [hours, setHours] = useState(0);
@@ -50,9 +62,9 @@ function QnaSection() {
     let id = null;
 
     useEffect(() => {
-        // console.log(state?.questions);
+        console.log(state?.questions);
         if (!answer_check && (currentQuestionIndex < (state?.questions.length))) {
-            console.log(currentQuestionIndex);
+            // console.log(currentQuestionIndex);
             setFormdata({
                 ...formdata,
                 [state?.questions[currentQuestionIndex]?.answer]: "",
@@ -89,7 +101,7 @@ function QnaSection() {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setAnswer_check(null)
         if (currentQuestionIndex === state?.questions.length) {
-            console.log('test changes');
+            // console.log('test changes');
             setTest(true)
         }
 
@@ -103,7 +115,7 @@ function QnaSection() {
     };
 
     const handleInputChange = (e) => {
-        console.log('changes');
+        // console.log('changes');
         setAnswer_check(e.target.value)
         setFormdata({
             ...formdata,
@@ -113,7 +125,7 @@ function QnaSection() {
 
     const handleFinalSubmit = async () => {
 
-        console.log(formdata);
+        // console.log(formdata);
         const finaldata = new FormData()
         finaldata.append('allqna', JSON.stringify(formdata))
         finaldata.append('file', state.file)
